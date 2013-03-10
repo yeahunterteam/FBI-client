@@ -1,0 +1,41 @@
+#!/bin/bash
+refname=$1
+oldhead=$2
+newhead=$3
+
+#if [ "$oldhead" -eq 0 ]; then
+    # list everything reachable from newrev but not any heads
+#list=git rev-list $(git for-each-ref --format='%(refname)' "refs/heads/*" | sed 's/^/\^/') "$newhead"
+#else
+#list=$(git rev-list ${oldhead}..${newhead} | tac)
+##fi
+
+for merged in $(git rev-list ${oldhead}..${newhead} | tac) ; do
+	project=$(basename `pwd`)
+	refname=${refname##refs/heads/}
+
+	gitver=$(git --version)
+	gitver=${gitver##* }
+
+	rev=$(git log ${merged} -n 1 --oneline | awk '{print $1}' 2>/dev/null)
+	[[ -z ${rev} ]] && rev=${merged:0:12}
+
+	rawcommit=$(git cat-file commit ${merged})
+
+	author=$(echo "${rawcommit}" | grep author | awk '{print $2}')
+
+	logmessage=$(sed -e '1,/^$/d' <<< "${rawcommit}")
+	logmessage_count=$(wc -l <<< "${logmessage}")
+
+	ts=$(sed -n -e '/^author .*> \([0-9]\+\).*$/s--\1-p' \
+	    <<< "${rawcommit}")
+
+	files=$(git diff-tree -r --name-only ${merged} |
+	    sed -e '1d' -e 's-.*-&-')
+
+	url="https://git.yeahunter.hu/?p=${project};a=commitdiff;h=@@sha1@@"
+
+	bitly=$(./hooks/yhsteu.pl ${url//@@sha1@@/${merged}})
+
+	mono /home/megax/Fbi2/Run/Release/Cliens.exe --host=127.0.0.1 --port=35220 --password=AbasslUIO883jHHG --author=${author} --url=${bitly} --project=${project} --refname=${refname} --rev=${rev} --channels=#fbi,#dev --ircserver=default --message=${logmessage}
+done
