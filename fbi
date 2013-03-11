@@ -36,4 +36,4 @@ url="https://git.yeahunter.hu/?p=${project};a=commitdiff;h=@@sha1@@"
 #bitly=$(./hooks/yhsteu.pl ${url//@@sha1@@/${merged}}) #Majd kesobb ha mar stabil lesz.
 bitly=${url//@@sha1@@/${merged}}
 
-mono /home/peti/IRCBOT/FBI-server/Run/Release/Cliens.exe --host=127.0.0.1 --port=35220 --password=AbasslUIO883jHHG --author=${author} --url=${bitly} --project=${project} --refname=${refname} --rev=${rev} --channels=#dev --ircserver=default --message=${logmessage}
+mono /home/peti/IRCBOT/FBI-server/Run/Release/Client.exe --host=127.0.0.1 --port=35220 --password=AbasslUIO883jHHG --author=${author} --url=${bitly} --project=${project} --refname=${refname} --rev=${rev} --channels=#dev --ircserver=default --message=${logmessage}
