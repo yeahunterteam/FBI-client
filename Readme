@@ -1,0 +1,18 @@
+Pár parancs amit lehet használni:
+
+Commit:
+	mono Client.exe --opcode=0x08 --author=asd --url=asd --project=asd --refname=asd --rev=asd --channels=#fbi --ircserver=yeahunter --message=asd
+	vagy
+	mono Client.exe --author=asd --url=asd --project=asd --refname=asd --rev=asd --channels=#fbi --ircserver=yeahunter --message=asd
+
+Csatorna hozzáadás:
+	mono Client.exe --opcode=0x09 --ircserver=yeahunter --channels=#fbi
+
+Csatorna törlés:
+	mono Client.exe --opcode=0x10 --ircserver=yeahunter --channels=#fbi
+
+Szerver betöltés:
+	mono Client.exe --opcode=0x11 --ircserver=yeahunter
+
+Szerver leválasztás:
+	mono Client.exe --opcode=0x12 --ircserver=yeahunter
